@@ -153,7 +153,7 @@ const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Mobile Menu Drawer - Fixed Z-Index & Layout (Opens from LEFT) */}
-      <div className={`fixed inset-0 z-[100] bg-[var(--bg-main)] transition-all duration-[var(--duration-slow)] ease-[var(--ease-out-expo)] ${isMobileMenuOpen ? 'translate-x-0 opacity-100 pointer-events-auto' : '-translate-x-full opacity-50 pointer-events-none'} md:hidden h-[100dvh] w-screen`}>
+      <div className={`fixed inset-0 z-[100] bg-[var(--bg-main)] transition-all duration-[var(--duration-slow)] ease-[var(--ease-out-expo)] ${isMobileMenuOpen ? 'translate-x-0 opacity-100 pointer-events-auto' : '-translate-x-full opacity-50 pointer-events-none'} md:hidden h-[100dvh] w-full`}>
         <div className="p-8 flex flex-col h-full relative">
           <button
             onClick={() => setIsMobileMenuOpen(false)}

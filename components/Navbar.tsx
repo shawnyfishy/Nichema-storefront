@@ -28,6 +28,15 @@ const Navbar: React.FC<NavbarProps> = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { user, logout } = useAuth();
 
+  // Prevent scrolling when mobile menu is open
+  React.useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isMobileMenuOpen]);
+
   const handleCheckout = () => {
     const checkoutUrl = localStorage.getItem('nichema_checkout_url');
     if (checkoutUrl) {
@@ -143,8 +152,8 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
-      <div className={`fixed inset-0 z-50 bg-[var(--bg-main)] transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out-expo)] ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}>
+      {/* Mobile Menu Drawer - Fixed Z-Index & Layout */}
+      <div className={`fixed inset-0 z-[100] bg-[var(--bg-main)] transition-all duration-[var(--duration-slow)] ease-[var(--ease-out-expo)] ${isMobileMenuOpen ? 'translate-x-0 opacity-100 pointer-events-auto' : 'translate-x-full opacity-50 pointer-events-none'} md:hidden h-[100dvh] w-screen`}>
         <div className="p-8 flex flex-col h-full relative">
           <button
             onClick={() => setIsMobileMenuOpen(false)}

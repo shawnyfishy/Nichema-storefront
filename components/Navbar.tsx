@@ -102,7 +102,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <span className="bg-[var(--primary-peony)] text-white w-5 h-5 rounded-full flex items-center justify-center text-[8px] animate-in zoom-in duration-300">{cartCount}</span>
           </button>
 
-          <div className={`absolute right-0 mt-4 w-80 glass-card rounded-[2.5rem] p-6 transition-all shadow-2xl border-white/20 origin-top-right duration-300 ease-[var(--ease-out-expo)] ${isCartOpen ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto' : 'opacity-0 translate-y-2 scale-95 pointer-events-none'}`}>
+          <div className={`absolute right-0 mt-4 w-[90vw] max-w-[320px] md:w-80 glass-card rounded-[2.5rem] p-6 transition-all shadow-2xl border-white/20 origin-top-right duration-300 ease-[var(--ease-out-expo)] ${isCartOpen ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto' : 'opacity-0 translate-y-2 scale-95 pointer-events-none'}`}>
             <div className="flex justify-between items-center mb-6">
               <h4 className="serif italic text-xl text-[var(--text-main)]">Your Ritual Bag</h4>
               <button onClick={() => setIsCartOpen(false)} className="text-[var(--text-main)] hover:text-[var(--primary-peony)]">&times;</button>
@@ -152,8 +152,8 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Menu Drawer - Fixed Z-Index & Layout */}
-      <div className={`fixed inset-0 z-[100] bg-[var(--bg-main)] transition-all duration-[var(--duration-slow)] ease-[var(--ease-out-expo)] ${isMobileMenuOpen ? 'translate-x-0 opacity-100 pointer-events-auto' : 'translate-x-full opacity-50 pointer-events-none'} md:hidden h-[100dvh] w-screen`}>
+      {/* Mobile Menu Drawer - Fixed Z-Index & Layout (Opens from LEFT) */}
+      <div className={`fixed inset-0 z-[100] bg-[var(--bg-main)] transition-all duration-[var(--duration-slow)] ease-[var(--ease-out-expo)] ${isMobileMenuOpen ? 'translate-x-0 opacity-100 pointer-events-auto' : '-translate-x-full opacity-50 pointer-events-none'} md:hidden h-[100dvh] w-screen`}>
         <div className="p-8 flex flex-col h-full relative">
           <button
             onClick={() => setIsMobileMenuOpen(false)}

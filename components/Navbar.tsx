@@ -25,6 +25,7 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [isCartOpen, setIsCartOpen] = React.useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { user, logout } = useAuth();
 
   const handleCheckout = () => {
@@ -44,8 +45,16 @@ const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-main)]/80 backdrop-blur-md border-b border-[var(--border-subtle)] px-6 md:px-12 py-6 flex justify-between items-center transition-all">
-      <div className="flex items-center space-x-8">
-        <button onClick={() => onNavigate('/')} className="text-3xl serif tracking-[0.2em] font-medium text-[var(--text-main)] uppercase hover:text-[var(--primary-peony)] transition-colors">NICHEMA</button>
+      <div className="flex items-center space-x-4 md:space-x-8">
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="md:hidden text-2xl text-[var(--text-main)] p-2 hover:opacity-70 transition-opacity"
+        >
+          ☰
+        </button>
+
+        <button onClick={() => onNavigate('/')} className="text-2xl md:text-3xl serif tracking-[0.2em] font-medium text-[var(--text-main)] uppercase hover:text-[var(--primary-peony)] transition-colors">NICHEMA</button>
         <div className="hidden md:flex space-x-6 text-[10px] uppercase tracking-[0.3em] font-bold opacity-60">
           <button onClick={() => onNavigate('/shop')} className="hover:opacity-100 transition-opacity">Shop</button>
           <button onClick={() => onNavigate('/commitment')} className="hover:opacity-100 transition-opacity">Commitment</button>
@@ -130,6 +139,40 @@ const Navbar: React.FC<NavbarProps> = ({
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Drawer */}
+      <div className={`fixed inset-0 z-50 bg-[var(--bg-main)] transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out-expo)] ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}>
+        <div className="p-8 flex flex-col h-full relative">
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="absolute top-6 right-6 text-3xl text-[var(--text-main)] hover:text-[var(--primary-peony)] transition-colors"
+          >
+            &times;
+          </button>
+
+          <div className="mt-20 flex flex-col space-y-8 text-center">
+            <h2 className="text-4xl serif italic text-[var(--text-main)] mb-8">Nichema Sanctuary</h2>
+            {['Shop', 'Commitment', 'Rituals', 'Story'].map((item) => (
+              <button
+                key={item}
+                onClick={() => {
+                  onNavigate(item === 'Story' ? '/about' : `/${item.toLowerCase()}`);
+                  setIsMobileMenuOpen(false);
+                }}
+                className="text-xl uppercase tracking-[0.3em] font-bold text-[var(--text-main)] hover:text-[var(--primary-peony)] transition-colors py-4 border-b border-[var(--border-subtle)]"
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-auto items-center justify-center flex space-x-8 pb-12 opacity-50">
+            <span>Instagram</span>
+            <span>•</span>
+            <span>Contact</span>
           </div>
         </div>
       </div>

@@ -86,12 +86,12 @@ const Shop: React.FC<ShopProps> = ({ addToCart, initialProductId }) => {
   };
 
   return (
-    <div className="pt-40 pb-32 px-6 md:px-12 bg-[var(--bg-main)] min-h-screen transition-colors duration-[var(--duration-slow)]">
+    <div className="pt-24 md:pt-40 pb-32 px-6 md:px-12 bg-[var(--bg-main)] min-h-screen transition-colors duration-[var(--duration-slow)]">
       <div className="max-w-7xl mx-auto">
         <header className="mb-20 text-center">
           <p className="text-[12px] uppercase tracking-[0.4em] text-[var(--primary-peony)] mb-4 font-extrabold">NICHEMA CURATION</p>
           <h2 className="text-6xl md:text-7xl serif mb-12 text-[var(--text-main)]">The Collection</h2>
-          <div className="inline-flex glass-card p-2 rounded-full space-x-2 text-[12px] uppercase tracking-[0.2em] mb-12 border border-[var(--primary-peony)]/20 shadow-sm">
+          <div className="inline-flex flex-wrap justify-center gap-4 glass-card p-4 rounded-[2rem] text-[12px] uppercase tracking-[0.2em] mb-12 border border-[var(--primary-peony)]/20 shadow-sm">
             {['all', 'skincare', 'haircare', 'coming-soon'].map((cat) => (
               <button
                 key={cat}
@@ -145,7 +145,7 @@ const Shop: React.FC<ShopProps> = ({ addToCart, initialProductId }) => {
               &times;
             </button>
 
-            <div className="md:w-1/2 h-[400px] md:h-auto sticky top-0 md:relative">
+            <div className="md:w-1/2 h-[300px] md:h-auto sticky top-0 md:relative">
               <img
                 src={selectedProduct.image}
                 alt={selectedProduct.name}
@@ -153,7 +153,7 @@ const Shop: React.FC<ShopProps> = ({ addToCart, initialProductId }) => {
               />
             </div>
 
-            <div className="md:w-1/2 p-8 md:p-16 space-y-12">
+            <div className="md:w-1/2 p-6 md:p-16 space-y-12">
               <div className="space-y-4">
                 <p className="text-[12px] uppercase tracking-[0.4em] text-[var(--primary-peony)] font-extrabold">{selectedProduct.category}</p>
                 <h2 className="text-4xl md:text-6xl serif text-[var(--text-main)]">{selectedProduct.name}</h2>

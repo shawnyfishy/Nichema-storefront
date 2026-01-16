@@ -97,7 +97,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate, theme }) => {
         </div>
 
         <div className="relative z-10 space-y-8 text-white max-w-4xl">
-          <h1 className="text-7xl md:text-[130px] tracking-[0.15em] leading-none serif reveal font-medium drop-shadow-2xl transition-all" style={{ transitionDelay: '0.2s' }}>
+          <h1 className="text-5xl md:text-[130px] tracking-[0.15em] leading-none serif reveal font-medium drop-shadow-2xl transition-all" style={{ transitionDelay: '0.2s' }}>
             NICHEMA
           </h1>
           <p className="mx-auto text-xl md:text-2xl font-medium tracking-[0.2em] reveal italic serif px-4 opacity-100 drop-shadow-xl" style={{ transitionDelay: '0.4s' }}>
@@ -115,7 +115,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate, theme }) => {
       </section>
 
       {/* Philosophy Section - Liquid Glass Pane */}
-      <section className="py-40 px-6 md:px-12 relative reveal overflow-hidden">
+      <section className="py-24 md:py-40 px-6 md:px-12 relative reveal overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--primary-peony)]/20 rounded-full blur-[120px] -mr-64 -mt-64 transition-opacity duration-[var(--duration-slow)]"></div>
         <div className="max-w-5xl mx-auto glass-card p-12 md:p-24 rounded-[4rem] relative z-10 text-center border border-white/20">
           <p className="text-[12px] uppercase tracking-[0.4em] text-[var(--primary-peony)] mb-8 font-extrabold">OUR PHILOSOPHY</p>
@@ -140,7 +140,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate, theme }) => {
       </section>
 
       {/* Promises Section */}
-      <section className="py-40 px-6 md:px-12 bg-transparent reveal">
+      <section className="py-24 md:py-40 px-6 md:px-12 bg-transparent reveal">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-5xl md:text-6xl serif text-[var(--text-main)] mb-6">The Nichema Promise</h2>
           <div className="w-12 h-px bg-[var(--text-main)]/20 mx-auto mb-32 transition-all duration-[var(--duration-slow)] hover:w-32"></div>
@@ -164,7 +164,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate, theme }) => {
       </section>
 
       {/* Featured Collection */}
-      <section className="py-40 px-6 md:px-12 bg-transparent">
+      <section className="py-24 md:py-40 px-6 md:px-12 bg-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-baseline mb-24 reveal">
             <div>

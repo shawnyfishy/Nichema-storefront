@@ -37,18 +37,18 @@ const Rituals: React.FC = () => {
   };
 
   return (
-    <div className="pt-40 pb-32 bg-[var(--bg-main)] transition-colors duration-700">
+    <div className="pt-24 md:pt-40 pb-32 bg-[var(--bg-main)] transition-colors duration-700">
       <div className="max-w-4xl mx-auto px-6">
         <header className="text-center mb-24 reveal">
           <p className="text-[12px] uppercase tracking-[0.4em] text-[var(--primary-peony)] mb-6 font-bold">SACRED CARE</p>
-          <h1 className="text-6xl md:text-7xl serif mb-10 text-[var(--text-main)]">Ritual Guidance</h1>
+          <h1 className="text-5xl md:text-7xl serif mb-10 text-[var(--text-main)]">Ritual Guidance</h1>
           <p className="serif italic text-2xl text-[var(--text-muted)]">Crafting a conversation between your skin and nature.</p>
         </header>
 
         {/* AI Generator - Glass Frame */}
-        <section className="glass-card p-10 md:p-20 rounded-[4rem] border border-white/20 mb-24 reveal">
+        <section className="glass-card p-6 md:p-20 rounded-[4rem] border border-white/20 mb-24 reveal">
           <div className="max-w-2xl mx-auto text-center space-y-12 text-[var(--text-main)]">
-            <h2 className="text-4xl serif italic">Craft Your Custom Ritual</h2>
+            <h2 className="text-3xl md:text-4xl serif italic">Craft Your Custom Ritual</h2>
             <p className="text-[13px] tracking-[0.2em] opacity-60 uppercase font-bold">Describe your skin or hair journey, and let our sanctuary guide suggest a path.</p>
 
             <div className="relative">
@@ -61,7 +61,7 @@ const Rituals: React.FC = () => {
               <button
                 onClick={generateRitual}
                 disabled={isGenerating || !concern.trim()}
-                className="mt-8 bg-[var(--primary-peony)] text-white px-12 py-5 rounded-full text-[13px] uppercase tracking-[0.3em] font-bold hover:bg-[var(--primary-espresso)] transition-all disabled:opacity-30 shadow-xl"
+                className="mt-8 w-full md:w-auto bg-[var(--primary-peony)] text-white px-12 py-5 rounded-full text-[13px] uppercase tracking-[0.3em] font-bold hover:bg-[var(--primary-espresso)] transition-all disabled:opacity-30 shadow-xl"
               >
                 {isGenerating ? 'Weaving your ritual...' : 'Receive Guidance'}
               </button>
@@ -81,7 +81,7 @@ const Rituals: React.FC = () => {
 
         {/* Standard Rituals - Frosted Glass Panels */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-[var(--text-main)]">
-          <div className="p-12 glass-card rounded-[3rem] space-y-8 hover:bg-white/40 transition-all cursor-default">
+          <div className="p-6 md:p-12 glass-card rounded-[3rem] space-y-8 hover:bg-white/40 transition-all cursor-default">
             <h3 className="text-[12px] uppercase tracking-[0.3em] font-bold text-[var(--primary-peony)]">Morning Awakening</h3>
             <p className="text-3xl serif italic">The Refresh Ritual</p>
             <ol className="space-y-6 text-[15px] text-[var(--text-muted)]">
@@ -90,7 +90,7 @@ const Rituals: React.FC = () => {
               <li className="flex space-x-4"><span>03</span> <span>Seal with light upward strokes, breathing in the saffron.</span></li>
             </ol>
           </div>
-          <div className="p-12 glass-card rounded-[3rem] space-y-8 hover:bg-white/40 transition-all cursor-default">
+          <div className="p-6 md:p-12 glass-card rounded-[3rem] space-y-8 hover:bg-white/40 transition-all cursor-default">
             <h3 className="text-[12px] uppercase tracking-[0.3em] font-bold text-[var(--primary-peony)]">Evening Rest</h3>
             <p className="text-3xl serif italic">The Recovery Ritual</p>
             <ol className="space-y-6 text-[15px] text-[var(--text-muted)]">

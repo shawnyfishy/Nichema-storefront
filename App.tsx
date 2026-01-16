@@ -13,6 +13,32 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { CartItem, Product } from './types';
 import { AuthProvider } from './context/AuthContext';
+import { addToCartApi, updateCartLine, removeCartLine, getCart } from './api';
+
+const mapShopifyLineToCartItem = (line: any): CartItem => {
+  const variant = line.merchandise;
+  const product = variant.product;
+  return {
+    id: product.id,
+    name: product.title,
+    category: 'skincare', // Default as we don't fetch full details in cart
+    price: parseFloat(variant.price?.amount || '0'),
+    image: product.images?.nodes?.[0]?.url || '',
+    description: '',
+    ingredients: [],
+    usage: '',
+    storage: '',
+    packaging: '',
+    cartId: line.id, // Use Shopify Line ID as the key
+    lineId: line.id,
+    quantity: line.quantity,
+    selectedSize: {
+      label: variant.title === 'Default Title' ? 'One Size' : variant.title,
+      price: parseFloat(variant.price?.amount || '0')
+    },
+    badge: ''
+  };
+};
 
 const App: React.FC = () => {
   const [currentPath, setCurrentPath] = useState('/');
@@ -23,10 +49,21 @@ const App: React.FC = () => {
 
   // Initialize Theme and Cart
   useEffect(() => {
-    const savedCart = localStorage.getItem('nichema_cart');
-    if (savedCart) {
-      try { setCart(JSON.parse(savedCart)); } catch (e) { console.error(e); }
-    }
+    const initCart = async () => {
+      try {
+        const shopifyCart = await getCart();
+        if (shopifyCart && shopifyCart.lines?.nodes) {
+          const items = shopifyCart.lines.nodes.map(mapShopifyLineToCartItem);
+          setCart(items);
+        } else {
+          // Fallback to local storage if no existing online cart, but generally we rely on API
+          // Only use local storage to maybe recover lost cart ID if needed, but api.ts handles that.
+        }
+      } catch (e) {
+        console.error("Failed to sync cart:", e);
+      }
+    };
+    initCart();
 
     const savedTheme = localStorage.getItem('nichema_theme') as 'light' | 'dark' | null;
     if (savedTheme) {
@@ -41,10 +78,6 @@ const App: React.FC = () => {
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('nichema_theme', newTheme);
   };
-
-  useEffect(() => {
-    localStorage.setItem('nichema_cart', JSON.stringify(cart));
-  }, [cart]);
 
   const navigate = (path: string, param?: string) => {
     if (path === currentPath && !param) {
@@ -75,29 +108,48 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleReveal);
   }, [currentPath]);
 
-  const addToCart = (product: Product, selectedSize?: { label: string; price: number }) => {
-    setCart(prev => {
-      const cartId = `${product.id}-${selectedSize?.label || 'default'}`;
-      const existing = prev.find(item => item.cartId === cartId);
-      if (existing) {
-        return prev.map(item => item.cartId === cartId ? { ...item, quantity: item.quantity + 1 } : item);
+  const addToCart = async (product: Product, selectedSize?: { label: string; price: number }) => {
+    // Optimistically update UI could be complex with Line IDs, so we'll wait for API for now to ensure correctness
+    try {
+      const updatedCart = await addToCartApi(product.id, 1, selectedSize);
+      if (updatedCart?.lines?.nodes) {
+        setCart(updatedCart.lines.nodes.map(mapShopifyLineToCartItem));
       }
-      return [...prev, { ...product, cartId, quantity: 1, selectedSize }];
-    });
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+      alert("Could not add to cart. Please try again.");
+    }
   };
 
-  const removeFromCart = (cartId: string) => {
-    setCart(prev => prev.filter(item => item.cartId !== cartId));
+  const removeFromCart = async (cartId: string) => {
+    // CartId is mapped to LineId in our helper
+    try {
+      const updatedCart = await removeCartLine(cartId);
+      if (updatedCart?.lines?.nodes) {
+        setCart(updatedCart.lines.nodes.map(mapShopifyLineToCartItem));
+      } else {
+        setCart([]);
+      }
+    } catch (error) {
+      console.error("Failed to remove from cart:", error);
+    }
   };
 
-  const updateQuantity = (cartId: string, delta: number) => {
-    setCart(prev => prev.map(item => {
-      if (item.cartId === cartId) {
-        const newQty = Math.max(1, item.quantity + delta);
-        return { ...item, quantity: newQty };
+  const updateQuantity = async (cartId: string, delta: number) => {
+    const item = cart.find(c => c.cartId === cartId);
+    if (!item) return;
+
+    const newQty = item.quantity + delta;
+    if (newQty < 1) return;
+
+    try {
+      const updatedCart = await updateCartLine(cartId, newQty);
+      if (updatedCart?.lines?.nodes) {
+        setCart(updatedCart.lines.nodes.map(mapShopifyLineToCartItem));
       }
-      return item;
-    }));
+    } catch (error) {
+      console.error("Failed to update quantity:", error);
+    }
   };
 
   const renderContent = () => {

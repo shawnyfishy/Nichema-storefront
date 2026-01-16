@@ -318,3 +318,115 @@ export async function addToCartApi(productId: string, quantity: number, size?: {
 
   return data.cartLinesAdd.cart;
 }
+
+export async function updateCartLine(lineId: string, quantity: number) {
+  const cartId = await getOrCreateCart();
+  const query = `
+    mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+      cartLinesUpdate(cartId: $cartId, lines: $lines) {
+        cart {
+          id
+          lines(first: 20) {
+            nodes {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  product { title }
+                }
+              }
+            }
+          }
+          checkoutUrl
+        }
+        userErrors { message }
+      }
+    }
+  `;
+
+  const { data, errors } = await smartClient.request(query, {
+    variables: { cartId, lines: [{ id: lineId, quantity }] },
+    cacheTTL: 0
+  });
+
+  if (errors || data?.cartLinesUpdate?.userErrors?.length > 0) {
+    throw new Error(data?.cartLinesUpdate?.userErrors?.[0]?.message || 'Failed to update cart');
+  }
+
+  return data.cartLinesUpdate.cart;
+}
+
+export async function removeCartLine(lineId: string) {
+  const cartId = await getOrCreateCart();
+  const query = `
+    mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+        cart {
+          id
+          lines(first: 20) {
+             nodes { id quantity }
+          }
+          checkoutUrl
+        }
+        userErrors { message }
+      }
+    }
+  `;
+
+  const { data, errors } = await smartClient.request(query, {
+    variables: { cartId, lineIds: [lineId] },
+    cacheTTL: 0
+  });
+
+  if (errors || data?.cartLinesRemove?.userErrors?.length > 0) {
+    throw new Error(data?.cartLinesRemove?.userErrors?.[0]?.message || 'Failed to remove from cart');
+  }
+
+  return data.cartLinesRemove.cart;
+}
+
+export async function getCart() {
+  const cartId = localStorage.getItem(CART_ID_KEY);
+  if (!cartId) return null;
+
+  const query = `
+    query getCart($cartId: ID!) {
+      cart(id: $cartId) {
+        id
+        checkoutUrl
+        lines(first: 20) {
+          nodes {
+            id
+            quantity
+            merchandise {
+              ... on ProductVariant {
+                id
+                title
+                price { amount currencyCode }
+                product {
+                  id
+                  title
+                  handle
+                  images(first: 1) { nodes { url } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const { data } = await smartClient.request(query, {
+    variables: { cartId },
+    cacheTTL: 0
+  });
+
+  if (data?.cart?.checkoutUrl) {
+    localStorage.setItem(CHECKOUT_URL_KEY, data.cart.checkoutUrl);
+  }
+
+  return data?.cart;
+}

@@ -19,6 +19,7 @@ export interface Product {
 
 export interface CartItem extends Product {
   cartId: string;
+  lineId?: string; // Shopify Cart Line ID
   quantity: number;
   selectedSize?: { label: string; price: number };
 }
